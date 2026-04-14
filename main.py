@@ -1,16 +1,28 @@
-def encrypt(text, shift):
-    result = ""
-    for char in text:
-        if 'a' <= char <= 'z':
-            shiftedChar = chr((ord(char) - ord('a') + shift) % 26 + ord('a'))
-        elif 'A' <= char <= 'Z':
-            shiftedChar = chr((ord(char) - ord('A') + shift) % 26 + ord('A'))
-        else:
-            shiftedChar = char
-        result += shiftedChar
-    return result
+def encrypt(text):
+    TextBinary = int(''.join(format(ord(i), '08b') for i in text))
+    print(TextBinary)
+    TextBinary = TextBinary * (10 ** 7)
+    TextBinary = TextBinary + (10 ** (len(str(TextBinary))))
+    TextBinary = str(TextBinary + 1111111)
+    print(TextBinary)
+    text = ''.join(chr(int(TextBinary[i*8:i*8+8], 2))
+                   for i in range(len(TextBinary)//8))
+    print(text)
+    return (text)
 
-originalText = input("Enter the text to encrypt: ")
-shiftValue = int(input("Enter the shift value: "))
-encryptedText = encrypt(originalText, shiftValue)
-print("Encrypted text:", encryptedText)
+
+def decrypt(text):
+    TextBinary = int(''.join(format(ord(i), '08b') for i in text))
+    print(TextBinary)
+    TextBinary = TextBinary - 1111111
+    print(TextBinary)
+    TextBinary = TextBinary - (10 ** (len(str(TextBinary)) - 1))
+    print(TextBinary)
+    TextBinary = str(TextBinary // (10 ** 7))
+    print(TextBinary)
+    text = ''.join(chr(int(TextBinary[i*8:i*8+8], 2))
+                   for i in range(len(TextBinary)//8))
+    print(text)
+
+
+decrypt(encrypt(input()))
