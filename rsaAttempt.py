@@ -2,7 +2,7 @@ from sympy import *
 import random
 
 
-def randcoprime(n, limlow=(10**3), limHigh=(10**10)):
+def randcoprime(n, limlow=(10**1), limHigh=(10**2)):
     while True:
         candidate = random.randint(limlow, limHigh)
         if gcd(candidate, n) == 1:
@@ -20,22 +20,38 @@ def modinv(e, phi):
 
 
 def keyGen():
-    prime1 = randprime(10**5, 10**10)
-    prime2 = randprime(10**5, 10**10)
+    prime1 = randprime(10**1, 10**2)
+    prime2 = randprime(10**1, 10**2)
     print(prime1)
     print(prime2)
     publicMod = prime1*prime2
-    print(publicMod)
+    print("n = " + str(publicMod))
     privateMod = (prime1 - 1) * (prime2 - 1)
-    print(privateMod)
     publicKey = randcoprime(privateMod)
-    print(publicKey)
+    print("e = " + str(publicKey))
     privateKey = modinv(publicKey,privateMod)
-    print(privateKey)
+    print("d = " + str(privateKey))
+
+
+def encodeDecode(modulus, key, text):
+    result = ""
+    for i in text:
+        char =  pow(ord(i), key, modulus) 
+        result += str(char)
+    print(result)
+
+    pass
+
+
+def main():
+    if input("genarate keys? \n:> ").strip().lower()[0] == 'y':
+        keyGen()
+    else:
+        encodeDecode(int(input("mod? \n:> ")), int(input("key \n:> ")), input("text? \n:> "))
 
 
 if __name__ == "__main__":
-    keyGen()
+    main()
 
 
 # (n * pri
